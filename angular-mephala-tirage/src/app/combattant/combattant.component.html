@@ -1,0 +1,15 @@
+<p>
+  combattant works!
+</p>
+
+<select 
+  name="region" 
+  [(ngModel)]="region" 
+  (ngModelChange)="changeRegion(region)" >
+  <option #regionSelect *ngFor="let region of listRegions" [ngValue]="region" >{{region.name}}</option>
+</select>
+<label for="nom-combattant">Nom :</label><input #nomCombattant type="text" name="nom-combattant" /><button (click)="addCombattant(nomCombattant.value)">+</button>
+
+<ul *ngFor="let combattant of listCombattants">
+  <li>{{combattant.name}} - {{ combattant.region}}</li>
+</ul>
