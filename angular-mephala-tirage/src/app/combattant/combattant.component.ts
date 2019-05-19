@@ -33,7 +33,6 @@ export class CombattantComponent implements OnInit {
     newCombattant.name = name;
     if(this.selectedRegion.name.length != 0)
     {
-      newCombattant.champion = false;
       newCombattant.region = this.selectedRegion.name;
       this.listCombattants.push(newCombattant);
     }
