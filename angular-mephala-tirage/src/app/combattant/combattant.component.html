@@ -1,6 +1,3 @@
-<p>
-  combattant works!
-</p>
 
 <select 
   name="region" 
@@ -8,8 +5,25 @@
   (ngModelChange)="changeRegion(region)" >
   <option #regionSelect *ngFor="let region of listRegions" [ngValue]="region" >{{region.name}}</option>
 </select>
-<label for="nom-combattant">Nom :</label><input #nomCombattant type="text" name="nom-combattant" /><button (click)="addCombattant(nomCombattant.value)">+</button>
+<label for="nom-combattant">Nom : </label>
+  <input #nomCombattant type="text" name="nom-combattant" />
+  <div>
+    <label id="champion-group-label">Champion désigné ?</label>
+    <mat-radio-group aria-labelledby="champion-group-label"
+    [(ngModel)]="selection" #radioGroup="matRadioGroup" ><p>
+      <mat-radio-button value="true">Oui</mat-radio-button><p>
+      <mat-radio-button value="false">Non</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div>
+    <button mat-button (click)="addCombattant(nomCombattant.value, radioGroup.value)">+</button>
+  </div>
+
+  <div>
+    <button mat-button (click)="tirage()">Tirage</button>
+  </div>
 
 <ul *ngFor="let combattant of listCombattants">
-  <li>{{combattant.name}} - {{ combattant.region}}</li>
+  <li>{{combattant.name}} - {{ combattant.region}} - {{ combattant.champion }}</li>
 </ul>

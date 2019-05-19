@@ -45,6 +45,4 @@ export class Region
         this.name = name;
         this.combattants = combattants;
     }
-
-
 }
