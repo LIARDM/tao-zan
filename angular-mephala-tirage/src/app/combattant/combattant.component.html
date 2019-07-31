@@ -1,29 +1,53 @@
+<div id="action-bar">
+  <button mat-raised-button color="primary" (click)="addCombattant(nomCombattant.value, radioGroup.value)">
+      <i class="material-icons">add</i>
+  </button>
+  <button mat-raised-button color="accent" (click)="tirage()">Tirage</button>
+</div>
 
-<select 
-  name="region" 
-  [(ngModel)]="region" 
-  (ngModelChange)="changeRegion(region)" >
-  <option #regionSelect *ngFor="let region of listRegions" [ngValue]="region" >{{region.name}}</option>
-</select>
-<label for="nom-combattant">Nom : </label>
-  <input #nomCombattant type="text" name="nom-combattant" />
-  <div>
-    <label id="champion-group-label">Champion désigné ?</label>
-    <mat-radio-group aria-labelledby="champion-group-label"
-    [(ngModel)]="selection" #radioGroup="matRadioGroup" ><p>
-      <mat-radio-button value="true">Oui</mat-radio-button><p>
-      <mat-radio-button value="false">Non</mat-radio-button>
-    </mat-radio-group>
-  </div>
+<p>
+  <mat-form-field appearance="outline">
+    <mat-label>Region :</mat-label>
+    <mat-select 
+      name="region" 
+      [(ngModel)]="region" 
+      (ngModelChange)="changeRegion(region)" >
+      <mat-option #regionSelect *ngFor="let region of listRegions" [value]="region" >{{region.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</p> 
 
-  <div>
-    <button mat-button (click)="addCombattant(nomCombattant.value, radioGroup.value)">+</button>
-  </div>
+<p>
+  <mat-form-field appearance="outline">
+    <mat-label>Nom :</mat-label>
+    <input matInput placeholder="Nom du Combattant" type="text"
+      #nomCombattant name="nom-combattant" value="" />
+      <mat-icon matSuffix>mode_edit</mat-icon>
+    </mat-form-field>
+</p>
 
-  <div>
-    <button mat-button (click)="tirage()">Tirage</button>
-  </div>
+<div class="champion-section">
+  <label id="champion-group-label">Champion désigné ?</label>
+  <mat-radio-group aria-labelledby="champion-group-label"
+  [(ngModel)]="selection" #radioGroup="matRadioGroup" class="champion-radio">
+    <mat-radio-button class="champion-radio-button" color="accent" value=1>Oui</mat-radio-button>
+    <mat-radio-button class="champion-radio-button" color="accent" value=0>Non</mat-radio-button>
+  </mat-radio-group>
+</div>
 
-<ul *ngFor="let combattant of listCombattants">
-  <li>{{combattant.name}} - {{ combattant.region}} - {{ combattant.champion }}</li>
-</ul>
+<ul *ngIf ='region'>
+<h3 *ngFor='let region of listRegions'>{{region.name}}</h3>
+    <li *ngFor="let combattant of region.combattants">{{combattant.name}}</li>
+  </ul>
+
+<mat-list *ngIf='listCombattants.length > 0'>
+  <ul *ngFor="let combattant of listCombattants">
+    <li>{{combattant.name}} - {{ combattant.region}} - {{ combattant.champion }}</li>
+  </ul>
+</mat-list>  
+<mat-divider></mat-divider>
+<mat-list *ngIf='listChampions.length > 0'>
+  <ul *ngFor="let champion of listChampions">
+    <li>{{champion.name}} - {{ champion.region}} - {{ champion.champion }}</li>
+  </ul>
+</mat-list>  
