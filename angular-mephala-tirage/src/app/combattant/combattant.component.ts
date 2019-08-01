@@ -12,6 +12,9 @@ import { Combattant } from '../models/combattant.model';
 })
 export class CombattantComponent implements OnInit 
 {
+  public region : any;
+  public selection : any;
+
   public listPoules : Poule[] = [];
   public listCombattants : Combattant[] = [];
   public listChampions : Combattant[] = [];
