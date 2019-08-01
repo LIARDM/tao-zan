@@ -92,14 +92,16 @@ export class CombattantComponent implements OnInit
     this.listPoules = [] as Poule[];
 
     // Pour chacune des champions de région on crée une poule
-    let i : number = 1;
+    let i : number = 0;
     for (let champion of this.listChampions)
     {
       console.log("Poule N°) " + i);
       //let nouvellePoule : Poule = new Poule(i);
       this.listPoules.push(new Poule(i));
       this.listPoules[i].champion = champion;
-      
+      this.listPoules[i].combattants = [] as Combattant[];
+
+
       // Un fois la liste pleine on enregistre la poule et on continue.
       this.listPoules[i].champion = champion;
       i+=1;
