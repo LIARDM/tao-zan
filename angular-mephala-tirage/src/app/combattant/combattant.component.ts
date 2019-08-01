@@ -10,6 +10,7 @@ import { Combattant } from '../models/combattant.model';
   templateUrl: './combattant.component.html',
   styleUrls: ['./combattant.component.scss']
 })
+
 export class CombattantComponent implements OnInit 
 {
   public region : any;
@@ -88,34 +89,38 @@ export class CombattantComponent implements OnInit
 
   public tirage()
   {
+    this.listPoules = [] as Poule[];
+
     // Pour chacune des champions de région on crée une poule
     let i : number = 1;
     for (let champion of this.listChampions)
     {
       console.log("Poule N°) " + i);
 
-      let nouvellePoule : Poule = new Poule(i);
-      nouvellePoule.champion = champion;
+      //let nouvellePoule : Poule = new Poule(i);
+      this.listPoules[i].champion = champion;
+      
       
       // Tirage de trois combattants dans la liste de tous les combattants.
-      for(let i = 0; i >= 2 ; i++)
+      console.log(this.checkAvailablePouleFor(this.listCombattants[0]));
+      for(let combattant of this.listCombattants)
       {
-        let combattantTire = this.listCombattants[Math.floor(Math.random()*this.listCombattants.length)]
-        console.log("Affichage du tirage au sort : " + combattantTire.name);
+        let listPouleNumber : number[] = this.checkAvailablePouleFor(combattant);
         
-        // Contrôle : «Les compétiteurs appartenant à la même région ne peuvent pas se rencontrer»
-        if(this.testUniciteRegion(nouvellePoule, combattantTire))
+        if(listPouleNumber.length == 0)
         {
-          // Ajout à un poule : 
-          nouvellePoule.combattants.push(combattantTire);
-      
-          // Retrait du combattant de la liste de tous les combattants.
-          this.removeCombattantFromArray(combattantTire);
-        } 
+          this.tirageValide=false;
+        }
+        let indice = Math.floor(Math.random()*listPouleNumber.length);
+        /*
+        * indice = [1..N] parmis les poules possibles
+        * listPouleNumber[indice] = [1...32] numéro de la poule tirée
+        */
+        this.listPoules[listPouleNumber[indice]].combattants.push(combattant);
       }
+
       // Un fois la liste pleine on enregistre la poule et on continue.
-      this.removeChampionFromArray(champion);
-      this.listPoules.push(nouvellePoule);
+      this.listPoules.push(this.listPoules[i]);
       i+=1;
     }
   }
@@ -189,5 +194,34 @@ export class CombattantComponent implements OnInit
     this.listRegionsDisponibles = resultat;
     //this.selectedRegion = new Region('',[]);
     //console.log(resultat);
+  }
+
+  public checkAvailablePouleFor(combattant)
+  {
+    let myArray : number[] = []
+    for(let poule of this.listPoules)
+    {
+      let valid = true;
+      let nbCombattantPoule = poule.combattants.length;
+      if (nbCombattantPoule == 4) 
+      {
+        valid = false;
+      } 
+      else
+      {
+        for(let combattantDejaDansPoule of poule.combattants)
+        {
+          if(combattantDejaDansPoule.region === combattant.region)
+          {
+            valid=false;
+          }
+        }
+      }  
+      if (valid)
+      {
+        myArray.push(poule.numero);
+      }
+      return myArray;
+    }
   }
 }
