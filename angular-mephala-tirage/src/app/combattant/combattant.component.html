@@ -36,17 +36,24 @@
   </mat-radio-group>
 </div>
 
-<div *ngFor='let region of listRegionsValidees'>
+<div class='region-valides' *ngFor='let region of listRegionsValidees'>
   <h4>{{region.name}}</h4>
   <ul>
     <li *ngFor="let combattant of region.combattants">{{combattant.name}}</li>
   </ul>
 </div>
 
-<mat-list *ngIf='listPoules.length > 0'>
-  <h4 *ngFor="let poule of listPoules">{{poule.numero}}</h4>
+<mat-list *ngIf='listPoules.length > 0' >
+  <div *ngFor="let poule of listPoules">
+    <h4>
+      {{poule.numero}}
+    </h4>
     <ul>
-      <li *ngFor='let combattant of poule.combattants'>{{combattant.name}} - {{ combattant.region}}</li>
-    </ul>
+      <div *ngFor="let combatPoule of poule.combattants">
+        <li>{{combatPoule.name}} - {{combatPoule.region}}</li>
+      </div> 
+      </ul>
   <mat-divider></mat-divider>
+  </div>
+
 </mat-list>  

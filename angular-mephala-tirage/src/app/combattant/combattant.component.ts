@@ -46,9 +46,8 @@ export class CombattantComponent implements OnInit
   {
     for(let myRegion of this.listRegionsDisponibles)
     {
-      let generatedChp : Combattant = new Combattant('Cha'+myRegion.name, myRegion.name, true);
       this.listChampions.push(new Combattant('Cha'+myRegion.name, myRegion.name, true));
-      myRegion.addCombattantToRegion(generatedChp);
+      myRegion.addCombattantToRegion(this.listChampions[this.listChampions.length-1]);
       let index = this.listRegionsDisponibles.findIndex(region => 
       {
         return region.name === myRegion.name;
@@ -63,9 +62,8 @@ export class CombattantComponent implements OnInit
     {
       for(let i = 0; i <= 2; i++)
       {
-        let generatedCbt : Combattant = new Combattant('Guer'+myRegion.name+'-'+i, myRegion.name, false);
-        this.listCombattants.push(generatedCbt);
-        myRegion.addCombattantToRegion(generatedCbt);
+        this.listCombattants.push(new Combattant('Guer'+myRegion.name, myRegion.name, false));
+        myRegion.addCombattantToRegion(this.listCombattants[this.listCombattants.length-1]);
         let index = this.listRegionsDisponibles.findIndex(region => 
         {
           return region.name === myRegion.name;
@@ -75,21 +73,29 @@ export class CombattantComponent implements OnInit
     }
   }
 
+  public isRegionFull( region : Region )
+  {
+    return region.combattants.length == 4
+  }
+
   public verifSiRegionValide()
   {
-    if(this.selectedRegion.combattants.length == 4)
+    for(let myRegion of this.listRegionsDisponibles)
     {
-      console.log("Region Validée : "+ this.selectedRegion.name);
-
-      let index = this.listRegionsDisponibles.findIndex(data => 
+      if(myRegion.combattants.length == 4)
       {
-        return data.name === this.selectedRegion.name;
-      })
-      this.listRegionsValidees.push(this.listRegionsDisponibles[index]);
-      this.removeRegionFromArray(this.selectedRegion);
-      return true;
+        console.log("Region Validée : "+ myRegion.name);
+  
+        let index = this.listRegionsDisponibles.findIndex(data => 
+        {
+          return data.name === myRegion.name;
+        })
+        this.listRegionsValidees.push(this.listRegionsDisponibles[index]);
+        this.removeRegionFromArray(myRegion);
+        return true;
+      }
+      return false;
     }
-    return false;
   }
 
   public addCombattant(name :string, champion : boolean)
@@ -101,7 +107,7 @@ export class CombattantComponent implements OnInit
     {
       console.log("nom= "+newCombattant.name +" || champion= "+newCombattant.champion);
       
-      if(!this.verifSiRegionValide())
+      if(!this.isRegionFull(this.selectedRegion))
       {
         newCombattant.region = this.selectedRegion.name;
         // Si c'est un champion :
@@ -187,8 +193,9 @@ export class CombattantComponent implements OnInit
     for(let cbtest of nouvellePoule.combattants)
     {
       if(cbtest.region === combattantTire.region)
-      return false;
-      break;
+      {
+        return false;
+      }
     }
     return true;
   }
