@@ -134,10 +134,12 @@ export class CombattantComponent implements OnInit
    */
   removeRegionFromArray(selectedRegion)
   {
-    let resultat = this.listRegions.findIndex(data =>
+    let resultat = this.listRegions.filter(data =>
     {
-      data.name === selectedRegion.name;
+      console.log(data.name);
+      return data.name !== selectedRegion.name;
     });
+    this.listRegions = resultat;
     console.log(resultat);
   }
 }
