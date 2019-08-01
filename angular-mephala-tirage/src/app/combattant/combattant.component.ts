@@ -30,6 +30,18 @@ export class CombattantComponent implements OnInit
     this.listRegionsDisponibles = REGIONS;
   }
 
+  public verifSiRegionValide()
+  {
+    if(this.selectedRegion.combattants.length == 4)
+    {
+      console.log("Region Validée : "+ this.selectedRegion.name);
+      this.listRegionsValidees.push(this.selectedRegion);
+      this.removeRegionFromArray(this.selectedRegion);
+      return true;
+    }
+    return false;
+  }
+
   public addCombattant(name :string, champion : boolean)
   {
     let newCombattant : Combattant = new Combattant();
@@ -38,15 +50,8 @@ export class CombattantComponent implements OnInit
     if(this.selectedRegion.name.length != 0)
     {
       console.log("nom= "+newCombattant.name +" || champion= "+newCombattant.champion);
-      // Si le Combattants[] n'est pas initalisé : 
-      if(this.selectedRegion.combattants.length == 4)
-      {
-        console.log("Region Validée : "+ this.selectedRegion.name);
-        this.listRegionsValidees.push(this.selectedRegion);
-        this.removeRegionFromArray(this.selectedRegion);
-        this.selectedRegion = new Region();
-      }
-      else
+      
+      if(!this.verifSiRegionValide())
       {
         newCombattant.region = this.selectedRegion.name;
         // Si c'est un champion :
@@ -60,6 +65,7 @@ export class CombattantComponent implements OnInit
           this.listCombattants.push(newCombattant);
         }       
         this.selectedRegion.addCombattantToRegion(newCombattant);
+        this.verifSiRegionValide();
       }
     }
   }
