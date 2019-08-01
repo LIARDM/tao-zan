@@ -14,6 +14,8 @@ export class CombattantComponent implements OnInit
 {
   public region : any;
   public selection : any;
+  public tirageValide : boolean;
+
 
   public listPoules : Poule[] = [];
   public listCombattants : Combattant[] = [];
@@ -38,7 +40,12 @@ export class CombattantComponent implements OnInit
     if(this.selectedRegion.combattants.length == 4)
     {
       console.log("Region Validée : "+ this.selectedRegion.name);
-      this.listRegionsValidees.push(this.selectedRegion);
+
+      let index = this.listRegionsDisponibles.findIndex(data => 
+      {
+        return data.name === this.selectedRegion.name;
+      })
+      this.listRegionsValidees.push(this.listRegionsDisponibles[index]);
       this.removeRegionFromArray(this.selectedRegion);
       return true;
     }
