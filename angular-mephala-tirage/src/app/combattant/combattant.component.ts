@@ -67,7 +67,13 @@ export class CombattantComponent implements OnInit
         {
           this.listCombattants.push(newCombattant);
         }       
+        
         this.selectedRegion.addCombattantToRegion(newCombattant);
+        let index = this.listRegionsDisponibles.findIndex(region => 
+          {
+            return region.name === this.selectedRegion.name;
+          });
+        //this.listRegionsDisponibles[index].addCombattantToRegion(newCombattant);
         this.verifSiRegionValide();
       }
     }
@@ -115,6 +121,11 @@ export class CombattantComponent implements OnInit
   {
     console.log("Region="+ value.name);
     this.selectedRegion.name = value.name;
+    let index = this.listRegionsDisponibles.findIndex(region =>
+    {
+      return region.name === this.selectedRegion.name
+    });
+    this.selectedRegion.combattants = this.listRegionsDisponibles[index].combattants;
   }
 
   /**
@@ -169,6 +180,7 @@ export class CombattantComponent implements OnInit
       return data.name !== selectedRegion.name;
     });
     this.listRegionsDisponibles = resultat;
+    //this.selectedRegion = new Region('',[]);
     //console.log(resultat);
   }
 }
