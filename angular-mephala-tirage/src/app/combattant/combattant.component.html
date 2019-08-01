@@ -1,4 +1,5 @@
 <div id="action-bar">
+  <button mat-raised-button color="accent" (click)="alimente()">Alimentation (Debug)</button>
   <button mat-raised-button color="primary" (click)="addCombattant(nomCombattant.value, radioGroup.value)">
       <i class="material-icons">add</i>
   </button>
@@ -42,14 +43,10 @@
   </ul>
 </div>
 
-<mat-list *ngIf='listCombattants.length > 0'>
-  <ul *ngFor="let combattant of listCombattants">
-    <li>{{combattant.name}} - {{ combattant.region}} - {{ combattant.champion }}</li>
-  </ul>
-</mat-list>  
-<mat-divider></mat-divider>
-<mat-list *ngIf='listChampions.length > 0'>
-  <ul *ngFor="let champion of listChampions">
-    <li>{{champion.name}} - {{ champion.region}} - {{ champion.champion }}</li>
-  </ul>
+<mat-list *ngIf='listPoules.length > 0'>
+  <h4 *ngFor="let poule of listPoules">{{poule.numero}}</h4>
+    <ul>
+      <li *ngFor='let combattant of poule.combattants'>{{combattant.name}} - {{ combattant.region}}</li>
+    </ul>
+  <mat-divider></mat-divider>
 </mat-list>  

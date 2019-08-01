@@ -34,6 +34,45 @@ export class CombattantComponent implements OnInit
   ngOnInit() 
   {
     this.listRegionsDisponibles = REGIONS;
+    
+  }
+
+  public alimente()
+  {
+    this.generateChambpionStub();
+    this.generateCombattantStub();
+  }
+  public generateChambpionStub()
+  {
+    for(let myRegion of this.listRegionsDisponibles)
+    {
+      let generatedChp : Combattant = new Combattant('Cha'+myRegion.name, myRegion.name, true);
+      this.listChampions.push(new Combattant('Cha'+myRegion.name, myRegion.name, true));
+      myRegion.addCombattantToRegion(generatedChp);
+      let index = this.listRegionsDisponibles.findIndex(region => 
+      {
+        return region.name === myRegion.name;
+      });
+      this.verifSiRegionValide();
+    }
+  }
+  
+  public generateCombattantStub()
+  {
+    for(let myRegion of this.listRegionsDisponibles)
+    {
+      for(let i = 0; i <= 2; i++)
+      {
+        let generatedCbt : Combattant = new Combattant('Guer'+myRegion.name+'-'+i, myRegion.name, false);
+        this.listCombattants.push(generatedCbt);
+        myRegion.addCombattantToRegion(generatedCbt);
+        let index = this.listRegionsDisponibles.findIndex(region => 
+        {
+          return region.name === myRegion.name;
+        });
+        this.verifSiRegionValide();
+      }
+    }
   }
 
   public verifSiRegionValide()
@@ -101,9 +140,6 @@ export class CombattantComponent implements OnInit
       this.listPoules[i].champion = champion;
       this.listPoules[i].combattants = [] as Combattant[];
 
-
-      // Un fois la liste pleine on enregistre la poule et on continue.
-      this.listPoules[i].champion = champion;
       i+=1;
     }
     // Tirage de tous les combattants.
@@ -115,7 +151,7 @@ export class CombattantComponent implements OnInit
       
       if(listPouleNumber.length == 0)
       {
-        this.tirageValide=false;
+        return;//this.tirageValide=false;
       }
       let indice = Math.floor(Math.random()*listPouleNumber.length);
       /*
@@ -222,7 +258,7 @@ export class CombattantComponent implements OnInit
       {
         myArray.push(poule.numero);
       }
-      return myArray;
     }
+    return myArray;
   }
 }
