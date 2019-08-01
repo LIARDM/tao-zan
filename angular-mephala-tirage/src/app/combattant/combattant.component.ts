@@ -96,32 +96,31 @@ export class CombattantComponent implements OnInit
     for (let champion of this.listChampions)
     {
       console.log("Poule N°) " + i);
-
       //let nouvellePoule : Poule = new Poule(i);
+      this.listPoules.push(new Poule(i));
       this.listPoules[i].champion = champion;
       
-      
+      // Un fois la liste pleine on enregistre la poule et on continue.
+      this.listPoules[i].champion = champion;
+      i+=1;
+    }
+    // Tirage de tous les combattants.
+    for(let combattant of this.listCombattants)
+    {  
       // Tirage de trois combattants dans la liste de tous les combattants.
       console.log(this.checkAvailablePouleFor(this.listCombattants[0]));
-      for(let combattant of this.listCombattants)
+      let listPouleNumber : number[] = this.checkAvailablePouleFor(combattant);
+      
+      if(listPouleNumber.length == 0)
       {
-        let listPouleNumber : number[] = this.checkAvailablePouleFor(combattant);
-        
-        if(listPouleNumber.length == 0)
-        {
-          this.tirageValide=false;
-        }
-        let indice = Math.floor(Math.random()*listPouleNumber.length);
-        /*
-        * indice = [1..N] parmis les poules possibles
-        * listPouleNumber[indice] = [1...32] numéro de la poule tirée
-        */
-        this.listPoules[listPouleNumber[indice]].combattants.push(combattant);
+        this.tirageValide=false;
       }
-
-      // Un fois la liste pleine on enregistre la poule et on continue.
-      this.listPoules.push(this.listPoules[i]);
-      i+=1;
+      let indice = Math.floor(Math.random()*listPouleNumber.length);
+      /*
+      * indice = [1..N] parmis les poules possibles
+      * listPouleNumber[indice] = [1...32] numéro de la poule tirée
+      */
+      this.listPoules[listPouleNumber[indice]].combattants.push(combattant);
     }
   }
 
