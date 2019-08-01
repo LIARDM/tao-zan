@@ -12,7 +12,7 @@
       name="region" 
       [(ngModel)]="region" 
       (ngModelChange)="changeRegion(region)" >
-      <mat-option #regionSelect *ngFor="let region of listRegions" [value]="region" >{{region.name}}</mat-option>
+      <mat-option #regionSelect *ngFor="let region of listRegionsDisponibles" [value]="region" >{{region.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 </p> 
@@ -35,10 +35,11 @@
   </mat-radio-group>
 </div>
 
+<div *ngFor='let region of listRegionsValidees'>
+  <h4>{{region.name}}</h4>
 <ul *ngIf ='region'>
-<h3 *ngFor='let region of listRegions'>{{region.name}}</h3>
-    <li *ngFor="let combattant of region.combattants">{{combattant.name}}</li>
-  </ul>
+  <li *ngFor="let combattant of region.combattants">{{combattant.name}}</li>
+</ul></div>
 
 <mat-list *ngIf='listCombattants.length > 0'>
   <ul *ngFor="let combattant of listCombattants">

@@ -15,18 +15,19 @@ export class CombattantComponent implements OnInit
   public listPoules : Poule[] = [];
   public listCombattants : Combattant[] = [];
   public listChampions : Combattant[] = [];
-  public listRegions : Region[];
+  public listRegionsDisponibles : Region[];
+  public listRegionsValidees : Region[] = [];
   public selectedRegion : Region
 
   constructor(
   ) 
   {
-    this.selectedRegion = new Region();
+    this.selectedRegion = new Region('',[]);
   }
 
   ngOnInit() 
   {
-    this.listRegions = REGIONS;
+    this.listRegionsDisponibles = REGIONS;
   }
 
   public addCombattant(name :string, champion : boolean)
@@ -36,25 +37,29 @@ export class CombattantComponent implements OnInit
     newCombattant.champion = champion.valueOf();
     if(this.selectedRegion.name.length != 0)
     {
-      newCombattant.region = this.selectedRegion.name;
-      // Si c'est un champion :
-      if(champion == true)
-      {
-        this.listChampions.push(newCombattant);
-      }
-      // Si c'est un combattant "Normal" : 
-      else
-      {
-        this.listCombattants.push(newCombattant);
-      }
-      this.selectedRegion.addCombattantToRegion(newCombattant);
-      
       console.log("nom= "+newCombattant.name +" || champion= "+newCombattant.champion);
-      
+      // Si le Combattants[] n'est pas initalisé : 
       if(this.selectedRegion.combattants.length == 4)
       {
         console.log("Region Validée : "+ this.selectedRegion.name);
+        this.listRegionsValidees.push(this.selectedRegion);
         this.removeRegionFromArray(this.selectedRegion);
+        this.selectedRegion = new Region();
+      }
+      else
+      {
+        newCombattant.region = this.selectedRegion.name;
+        // Si c'est un champion :
+        if(champion == true)
+        {
+          this.listChampions.push(newCombattant);
+        }
+        // Si c'est un combattant "Normal" : 
+        else
+        {
+          this.listCombattants.push(newCombattant);
+        }       
+        this.selectedRegion.addCombattantToRegion(newCombattant);
       }
     }
   }
@@ -87,6 +92,7 @@ export class CombattantComponent implements OnInit
         } 
       }
       // Un fois la liste pleine on enregistre la poule et on continue.
+      this.removeChampionFromArray(champion);
       this.listPoules.push(nouvellePoule);
       i+=1;
     }
@@ -124,8 +130,22 @@ export class CombattantComponent implements OnInit
    */
   removeCombattantFromArray(combattantTire)
   {
-    let index = this.listCombattants.indexOf(combattantTire);
-    this.listCombattants.splice(index,1);
+    let resultat = this.listCombattants.filter(data => 
+      {
+        console.log('Retrait de : ' + combattantTire.name);
+        return data.name !== combattantTire.name;
+      });
+    this.listCombattants = resultat;
+  }
+
+  removeChampionFromArray(champion)
+  {
+    let resultat = this.listChampions.filter(data => 
+      {
+        console.log('Retrait de : ' + champion.name);
+        return data.name !== champion.name;
+      });
+    this.listChampions = resultat;
   }
 
   /**
@@ -134,12 +154,12 @@ export class CombattantComponent implements OnInit
    */
   removeRegionFromArray(selectedRegion)
   {
-    let resultat = this.listRegions.filter(data =>
+    let resultat = this.listRegionsDisponibles.filter(data =>
     {
       console.log(data.name);
       return data.name !== selectedRegion.name;
     });
-    this.listRegions = resultat;
-    console.log(resultat);
+    this.listRegionsDisponibles = resultat;
+    //console.log(resultat);
   }
 }
