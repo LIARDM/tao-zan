@@ -36,6 +36,8 @@
   </mat-radio-group>
 </div>
 
+<h4 *ngIf='listRegionsValidees.length >0'>Régions validées</h4>
+
 <table class='region-valides' *ngFor="let number of [0,1,2,3]">
   <thead>
       <th *ngFor='let region of listRegionsValidees | slice:number*8:number*8+8'>{{region.name}}</th>
@@ -47,15 +49,19 @@
   </tbody>
 </table>
 
-<mat-list *ngIf='listPoules.length > 0' >
-  <thead class='poule-block' *ngFor="let poule of listPoules">
-    <h4>Poule n°{{poule.numero+1}}</h4>
-    <ul>Champion : {{poule.champion.name}}
-      <div *ngFor="let combatPoule of poule.combattants">
-        <li>{{combatPoule.name}} - {{combatPoule.region}}</li>
-      </div> 
-      </ul>
-  <mat-divider></mat-divider>
-  </thead>
+<mat-divider></mat-divider>
 
-</mat-list>  
+<h4 *ngIf='listPoules.length >0'>Poules validées</h4>
+<div id="poules-tirees" *ngIf='listPoules.length > 0' >
+  <table *ngFor="let number of [0,1,2,3]">
+    <thead>
+      <th *ngFor="let poule of listPoules | slice:number*8:number*8+8">Poule n°{{poule.numero+1}}</th>
+    </thead>
+    <tbody>
+      <td *ngFor="let poule of listPoules | slice:number*8:number*8+8">
+        <tr>Champion : {{poule.champion.name}}</tr>
+        <tr *ngFor="let combatPoule of poule.combattants">{{combatPoule.name}} - {{combatPoule.region}}</tr>
+      </td>
+    </tbody>
+  </table>  
+</div>
