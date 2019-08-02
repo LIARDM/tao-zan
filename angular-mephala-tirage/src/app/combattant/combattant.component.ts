@@ -247,7 +247,7 @@ export class CombattantComponent implements OnInit
     {
       let valid = true;
       let nbCombattantPoule = poule.combattants.length;
-      if (nbCombattantPoule == 4) 
+      if (nbCombattantPoule == 3) 
       {
         valid = false;
       } 

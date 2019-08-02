@@ -48,7 +48,7 @@
     <h4>
       {{poule.numero}}
     </h4>
-    <ul>
+    <ul>Champion : {{poule.champion.name}}
       <div *ngFor="let combatPoule of poule.combattants">
         <li>{{combatPoule.name}} - {{combatPoule.region}}</li>
       </div> 
